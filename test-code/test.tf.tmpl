@@ -1,0 +1,31 @@
+# Data
+data "terraform_remote_state" "test" {
+  backend = "remote"
+
+  config = {
+    hostname = "${host}"
+    organization = "${org}"
+    token = "${team_token}"
+
+    workspaces = {
+      name = "${data_workspace}"
+    }
+  }
+}
+
+# Output that we supposed to read from that workspace
+# That contains code from gihub "Galser/tfc-random-pet"
+  
+  # My test repos that contains following code : 
+  #
+  # resource "random_pet" "demo" { }
+
+  # output "demo" {
+  #   value = random_pet.demo.id
+  # }
+  # 
+  # So we should be able to access "demo" output
+
+output "pet-name-from-test-workspace-via-team-token" {
+  value = data.terraform_remote_state.test.outputs.demo
+}
